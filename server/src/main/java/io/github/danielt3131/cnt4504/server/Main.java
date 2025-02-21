@@ -1,8 +1,6 @@
 package io.github.danielt3131.cnt4504.server;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
@@ -15,11 +13,8 @@ public class Main {
        try (ServerSocket serverSocket = new ServerSocket(2000)) {
            while (true) {
                Socket socket = serverSocket.accept();
-               InputStream inputStream = socket.getInputStream();
-               Scanner scanner = new Scanner(inputStream);
-               int option = Integer.parseInt(scanner.nextLine());
-               scanner.close();
-               inputStream.close();
+               BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+               System.out.println(in.readLine());
                PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
                printWriter.println(new Date().toString());
            }
