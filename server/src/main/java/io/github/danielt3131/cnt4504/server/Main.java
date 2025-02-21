@@ -13,10 +13,13 @@ public class Main {
        try (ServerSocket serverSocket = new ServerSocket(2000)) {
            while (true) {
                Socket socket = serverSocket.accept();
+               System.out.println("New client connected");
                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                System.out.println(in.readLine());
                PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
                printWriter.println(new Date().toString());
+               printWriter.close();
+               socket.close();
            }
        } catch (IOException e) {
            throw new RuntimeException(e);
