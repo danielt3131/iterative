@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("application")
 }
 
 group = "io.github.danielt3131.cnt4504"
@@ -16,4 +17,9 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+application {
+    // Define the main class for the application.
+    mainClass.set("io.github.danielt3131.cnt4504.client.Main")
 }
