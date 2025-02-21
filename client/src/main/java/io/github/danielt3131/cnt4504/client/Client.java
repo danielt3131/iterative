@@ -19,6 +19,7 @@ public class Client implements Runnable {
         try (Socket socket = new Socket("139.62.210.155", 2000)) {
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
             writer.write(String.valueOf(optionSelector));
+            writer.close();
             InputStream inputStream = socket.getInputStream();
             Scanner scanner = new Scanner(inputStream);
             while (scanner.hasNextLine()) {
