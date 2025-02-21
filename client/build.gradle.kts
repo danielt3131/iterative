@@ -23,3 +23,11 @@ application {
     // Define the main class for the application.
     mainClass.set("io.github.danielt3131.cnt4504.client.Main")
 }
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Manifest-Version"] = "1.0"
+        attributes["Main-Class"] = "io.github.danielt3131.cnt4504.client.Main"
+    }
+    destinationDirectory = File("$rootDir")
+}
