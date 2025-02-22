@@ -32,13 +32,19 @@ public class Main {
             threads[i].start();
         }
         long runtime = 0;
+
+        // Write results to a buffer in memory then flush to a file
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("result.txt", true)));
+        writer.println(String.format("Mode %d with %d threads", option, numThreads));
         for (int i = 0; i < numThreads; i++) {
             threads[i].join();
             runtime += client[i].getElapsedTime();
+            writer.println(String.format("Thread %d: runtime %dms", i, client[i].getElapsedTime()));
         }
-        System.out.println(runtime + "ms");
-        PrintWriter writer = new PrintWriter(new FileWriter("result.txt", true));
-        writer.println(runtime + "ms");
+        // Writes the elapsed time to file
+        writer.println("Total Turn around time" + runtime + "ms");
+        writer.println("Average Total Turn around time" + runtime/numThreads + "ms");
+
         writer.close();
 
     }

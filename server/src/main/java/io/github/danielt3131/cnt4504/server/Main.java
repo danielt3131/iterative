@@ -10,8 +10,16 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(2000)) {
-
+        int port;
+        try {
+                System.out.println("Enter in a port for the server to listen to");
+                Scanner scanner = new Scanner(System.in);
+                port = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Womp womp try again");
+            throw e;
+        }
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
