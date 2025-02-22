@@ -1,0 +1,74 @@
+package io.github.danielt3131.cnt4504.server;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Date;
+import java.util.Scanner;
+
+public class ServerThread implements Runnable {
+
+    private Socket socket;
+    public ServerThread(Socket socket) {
+        this.socket = socket;
+    }
+
+    @Override
+    public void run() {
+        try {
+            System.out.println("New client connected");
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            int option = Integer.parseInt(in.readLine());
+            System.out.println(option);
+            System.out.println("Processing request");
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+
+            if (option == 1) {
+                printWriter.println(new Date().toString());
+                System.out.println("Processed");
+            } else if (option == 2) {
+                Process process = Runtime.getRuntime().exec("uptime");
+                Scanner scanner = new Scanner(process.getInputStream());
+                while (scanner.hasNextLine()) {
+                    printWriter.println(scanner.nextLine());
+                }
+                System.out.println("Processed");
+            } else if (option == 3) {
+                Process process = Runtime.getRuntime().exec("free -h");
+                Scanner scanner = new Scanner(process.getInputStream());
+                while (scanner.hasNextLine()) {
+                    printWriter.println(scanner.nextLine());
+                }
+                System.out.println("Processed");
+            } else if (option == 4) {
+                Process process = Runtime.getRuntime().exec("netstat");
+                Scanner scanner = new Scanner(process.getInputStream());
+                while (scanner.hasNextLine()) {
+                    printWriter.println(scanner.nextLine());
+                }
+                System.out.println("Processed");
+            } else if (option == 5) {
+                Process process = Runtime.getRuntime().exec("w");
+                Scanner scanner = new Scanner(process.getInputStream());
+                while (scanner.hasNextLine()) {
+                    printWriter.println(scanner.nextLine());
+                }
+                System.out.println("Processed");
+            } else if (option == 6) {
+                Process process = Runtime.getRuntime().exec("ps aux");
+                Scanner scanner = new Scanner(process.getInputStream());
+                while (scanner.hasNextLine()) {
+                    printWriter.println(scanner.nextLine());
+                }
+                System.out.println("Processed");
+            } else {
+                printWriter.println("Womp womp");
+            }
+            socket.shutdownOutput();
+        } catch (IOException e) {
+            System.err.println("Errror");
+        }
+    }
+}
