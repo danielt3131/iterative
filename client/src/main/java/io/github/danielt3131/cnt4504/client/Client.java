@@ -8,6 +8,7 @@ public class Client implements Runnable {
     private int optionSelector;
     private String host;
     private int port;
+    private long elapsedTime;
 
 
     public Client(String host, int port, int optionSelector) {
@@ -16,9 +17,14 @@ public class Client implements Runnable {
         this.port = port;
     }
 
+    public long getElapsedTime() {
+        return elapsedTime;
+    }
+
     @Override
     public void run() {
         try (Socket socket = new Socket(host, port)) {
+            elapsedTime = System.currentTimeMillis();
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
             writer.println(optionSelector);
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -27,6 +33,7 @@ public class Client implements Runnable {
                 System.out.println(line);
             }
             reader.close();
+            elapsedTime = System.currentTimeMillis() - elapsedTime;
 
         } catch (IOException e) {
             System.out.println("Error");

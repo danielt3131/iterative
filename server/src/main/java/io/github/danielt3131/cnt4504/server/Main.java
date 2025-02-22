@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(2000)) {
+
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
@@ -61,6 +62,8 @@ public class Main {
                 } else {
                     printWriter.println("Womp womp");
                 }
+                socket.shutdownOutput();
+
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

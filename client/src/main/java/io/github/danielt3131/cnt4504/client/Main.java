@@ -23,17 +23,22 @@ public class Main {
         System.out.println("Enter in how many requests you like to make (threads)");
         int numThreads = Integer.parseInt(console.nextLine());
 
-        Client client = new Client(line[0], Integer.parseInt(line[1]), option);
+        Client[] client = new Client[numThreads];
         Thread[] threads = new Thread[numThreads];
-        long runtime = System.currentTimeMillis();
+
         for (int i = 0; i < numThreads; i++) {
-            threads[i] = new Thread(client);
+            client[i] = new Client(line[0], Integer.parseInt(line[1]), option);
+            threads[i] = new Thread(client[i]);
             threads[i].start();
         }
-        runtime = System.currentTimeMillis() - runtime;
+        long runtime = 0;
+        for (int i = 0; i < numThreads; i++) {
+            threads[i].join();
+            runtime += client[i].getElapsedTime();
+        }
         System.out.println(runtime + "ms");
         PrintWriter writer = new PrintWriter(new FileWriter("result.txt", true));
-        writer.write(runtime + "ms");
+        writer.println(runtime + "ms");
         writer.close();
 
     }
