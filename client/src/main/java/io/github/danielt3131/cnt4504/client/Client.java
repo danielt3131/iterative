@@ -19,13 +19,14 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try (Socket socket = new Socket(host, port)) {
-            long runtime = System.currentTimeMillis();
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-            writer.write(optionSelector);
+            writer.println(optionSelector);
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println(reader.readLine());
-            runtime = System.currentTimeMillis() - runtime;
-            System.out.println(runtime);
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            reader.close();
 
         } catch (IOException e) {
             System.out.println("Error");
